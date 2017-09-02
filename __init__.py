@@ -1,18 +1,29 @@
-# ##### BEGIN CC BY 4.0 LICENSE BLOCK #####
+############# BEGIN GPL 3.0 LICENSE BLOCK ##############################
 #
-# This work is licensed under the Creative Commons Attribution 4.0 International License.
-# To view a copy of this license, visit http://creativecommons.org/licenses/by/4.0/ or 
-# send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+#  This file is part of Doppelrender.
+# 
+#  Doppelrender is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+# 
+#  Doppelrender is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#  GNU General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Doppelrender. If not, see <http://www.gnu.org/licenses/>.
 #
-# ##### END CC BY 4.0 LICENSE BLOCK #####
+############# END GPL 3.0 LICENSE BLOCK ################################
 
 # <pep8 compliant>
 
 bl_info = {
     "name": "Dopplerender",
-    "description": "Smart sequence-rendering that automatically copies duplicate frames without re-rendering.",
+    "description": "Smart sequence-rendering that automatically re-uses duplicate frames without re-rendering.",
     "author": "Jefferson Smith",
-    "version": (0, 0, 2),
+    "version": (0, 0, 3),
     "blender": (2, 7, 8),
     "location": "Properties > Scene > Render",
     "category": "Render",
@@ -35,9 +46,9 @@ def register():
     bpy.utils.register_module(__name__)
     bpy.types.Scene.dopplerender_thumbsize = bpy.props.FloatProperty(
         name="Thumbnail Reduction",
-        description="Percentage scale of render size for comparison thumbnails",
+        description="Percentage scale of thumbnail size for frame comparison",
         default=5,
-        min=0,
+        min=1,
         max=100,
         subtype='PERCENTAGE')
 

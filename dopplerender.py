@@ -1,10 +1,21 @@
-# ##### BEGIN CC BY 4.0 LICENSE BLOCK #####
+############# BEGIN GPL 3.0 LICENSE BLOCK ##############################
 #
-# This work is licensed under the Creative Commons Attribution 4.0 International License.
-# To view a copy of this license, visit http://creativecommons.org/licenses/by/4.0/ or 
-# send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+#  This file is part of Doppelrender.
+# 
+#  Doppelrender is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+# 
+#  Doppelrender is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#  GNU General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with Doppelrender. If not, see <http://www.gnu.org/licenses/>.
 #
-# ##### END CC BY 4.0 LICENSE BLOCK #####
+############# END GPL 3.0 LICENSE BLOCK ################################
 
 # <pep8 compliant>
 
@@ -55,8 +66,7 @@ def dopplerender_process(context):
     render_full(context, doppel_sets, preprocess_time)
     rendercopy_time = time.time() - post_checksums
 
-    print("Timings: thumbnails: %.03f, checksums: %.03f, render %d fully+clone: %.03f" %
-          (thumb_time, checksum_time, unique_frame_count, rendercopy_time))
+    print("Timings: thumbnails: %.03f, checksums: %.03f, render %d fully+clone: %.03f" % (thumb_time, checksum_time, unique_frame_count, rendercopy_time))
     print("== DoppleRender Finished ==")
 
 
@@ -168,14 +178,22 @@ def render_full(context, doppel_sets, preprocesstime=None):
     # Ensure there's a numbering pattern on the path; my renderpath was "/tmp/"
     fullrender_pathtemplate = os.path.join(old_fpath, "####.png")
 
+
+    wm = bpy.context.window_manager
+    tot = len(render_frames)
+    wm.progress_begin(0, tot)
     frame_rts = []    # frame render times, for stats report
+    frame_count = 0
     for frame_num in render_frames:
+        frame_count += 1
+        wm.progress_update(frame_count)
         t0 = time.time()
         scene.frame_set(frame_num)
         scene.render.filepath = framenum_to_filepath(frame_num, fullrender_pathtemplate)
         bpy.ops.render.render(write_still=True)
         tframe = time.time()
         frame_rts.append(tframe-t0)
+    wm.progress_end()
 
     tot_frt = sum(frame_rts)
     avg_frt = tot_frt / len(frame_rts)
