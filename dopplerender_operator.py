@@ -250,3 +250,14 @@ class DoppleRenderPanel(bpy.types.Panel):
 
         row = self.layout.row()
         row.prop(context.scene, "dopplerender_copytype", expand=True)
+
+
+#####################################
+
+def register():
+    bpy.utils.register_class(DoppleRenderOperator)
+    bpy.utils.register_class(DoppleRenderPanel)
+
+def unregister():
+    bpy.utils.unregister_class(DoppleRenderOperator)
+    bpy.utils.unregister_class(DoppleRenderPanel)
