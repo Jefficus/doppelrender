@@ -22,28 +22,26 @@
 bl_info = {
     "name": "Dopplerender",
     "description": "Smart sequence-rendering that automatically re-uses duplicate frames without re-rendering.",
-    "author": "Jefferson Smith",
-    "version": (0, 0, 3),
-    "blender": (2, 7, 8),
-    "location": "Properties > Scene > Render",
+    "author": "Jefferson Smith, Samy Tichadou (tonton)",
+    "version": (0, 0, 4),
+    "blender": (3, 0, 0),
+    "location": "Properties > Render",
     "category": "Render",
     "warning": "",
-    "support": 'COMMUNITY'
+    "support": 'COMMUNITY',
+    "wiki_url": "https://github.com/Jefficus/doppelrender/blob/master/README.md",
+    "tracker_url": "https://github.com/Jefficus/doppelrender/issues/new"
     }
 
-if "bpy" in locals():
-    import imp
-    if "dopplerender" in locals():
-        imp.reload(dopplerender)
 
 import bpy
 import os
 import tempfile
-from . import dopplerender
+from . import dopplerender_operator
 
 
 def register():
-    bpy.utils.register_module(__name__)
+    dopplerender_operator.register()
     bpy.types.Scene.dopplerender_thumbsize = bpy.props.FloatProperty(
         name="Thumbnail Reduction",
         description="Percentage scale of thumbnail size for frame comparison",
@@ -67,7 +65,7 @@ def register():
 
 
 def unregister():
+    dopplerender_operator.unregister()
     del bpy.types.Scene.dopplerender_copytype
     del bpy.types.Scene.dopplerender_thumbpath
     del bpy.types.Scene.dopplerender_thumbsize
-    bpy.utils.unregister_module(__name__)
